@@ -9,7 +9,12 @@ public class Main {
 		
 		while(true) {			
 			System.out.println("명령어를 입력하세요: ");
-			String cmd = sc.nextLine();
+			String cmd = sc.nextLine().trim();
+			
+			if (cmd.equals("exit")) {
+				System.out.println("프로그램을 종료합니다.");
+				break;
+			}
 			
 			if (cmd.equals("article write")) {
 				System.out.println("제목: ");
@@ -23,13 +28,11 @@ public class Main {
 			
 			if (cmd.equals("article list")) {
 				System.out.println("게시글이 없습니다.");
-			}
-			
-			if (cmd.equals("exit")) {
-				System.out.println("프로그램을 종료합니다.");
-				break;
-			}
-			
+			} else if (cmd.length() == 0) {
+				System.out.println("아무것도 입력되지 않았습니다.");
+			} else {
+				System.out.println("존재하지 않는 명령어입니다.");
+			}		
 		}
 		
 		sc.close();
