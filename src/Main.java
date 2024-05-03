@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -5,10 +7,13 @@ public class Main {
 		System.out.println("== 프로그램 시작 ==");
 		
 		Scanner sc = new Scanner(System.in);
-		int articlenumber = 0;
+		
+		List<Article> articles = new ArrayList<>();
+		
+		int number = 1;
 		
 		while(true) {			
-			System.out.println("명령어를 입력하세요: ");
+			System.out.printf("명령어를 입력하세요: ");
 			String cmd = sc.nextLine().trim();
 			
 			if (cmd.equals("exit")) {
@@ -21,19 +26,34 @@ public class Main {
 				continue;
 			}
 			
-			if (cmd.equals("article list")) {
-				System.out.println("게시글이 없습니다.");
-			} else if (cmd.equals("article write")) {
+			if (cmd.equals("article write")) {
 				System.out.printf("제목: ");
 				String title = sc.nextLine().trim();
 				System.out.printf("내용: ");
 				String content = sc.nextLine().trim();
 				
-				articlenumber += 1;
-				System.out.println(articlenumber + "번 글이 생성되었습니다.");
-			} else {
-				System.out.println("존재하지 않는 명령어입니다.");
-			}		
+				Article article = new Article(number, title, content);
+				articles.add(article);
+				
+				System.out.println(number + "번 글이 생성되었습니다.");
+				number += 1;
+			}
+			
+			if (cmd.equals("article list")) {
+				if (articles.size() == 0) {
+					System.out.println("존재하는 게시글이 없습니다.");
+				} 
+				if (articles.size() != 0) {
+					System.out.println();
+					for(int i = 0; i < articles.size(); i++) {
+						Article article = articles.get(i);
+						System.out.println("번호: " + article.number);
+						System.out.println("제목: " + article.title);
+						System.out.println("내용: " + article.content);
+						System.out.println("=========================");
+					}
+				}
+			}
 		}
 		
 		sc.close();
@@ -41,8 +61,13 @@ public class Main {
 	}
 }
 
-class ArticleListUpload {
-	void listupload() {
-		
+class Article{
+	int number;
+	String title;
+	String content;
+	Article (int number, String title, String content) {
+		this.content = content;
+		this.number = number;
+		this.title = title;
 	}
 }
