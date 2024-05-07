@@ -15,7 +15,6 @@ public class Main {
 		LocalDate now = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
 		
-		
 		int number = 1;
 		
 		while(true) {			
@@ -54,29 +53,50 @@ public class Main {
 					System.out.println();
 					for(int i = articles.size() - 1; i >= 0; i--) {		// 리스트 역순으로 출력
 						Article article = articles.get(i);
-						System.out.println("번호: " + article.number);
+						System.out.println(article.number + "번 게시물");
 						System.out.println("제목: " + article.title);
 						System.out.println("내용: " + article.content);
-						System.out.println("날짜: " + article.date);
 						System.out.println("=========================");
 					}
 				}
 			}
 			
-			if (cmd.equals("article detail")) {
-				System.out.println("번호를 입력하세요: ");
-				int k = sc.nextInt() - 1;
-				Article article = articles.get(k);
+			if (cmd.startsWith("article detail ")) {
+				// 명령어가 article detail 로 시작하는 것 중에
+				String[] cmdBits = cmd.split(" ");
+				// 띄어쓰기를 기준으로 하나씩 나누어서 cmdBits 배열에 차례대로 저장
+				Article foundArticle = null;
+				// Article 객체를 하나 만들어서 null 값으로 설정
 				
-				if (article.number == k) {
-					System.out.println("번호: " + article.number);
-					System.out.println("날짜: " + article.date);
-					System.out.println("제목: " + article.title);
-					System.out.println("내용: " + article.content);
-				} else {							
-					System.out.println(k + "번 게시물이 존재하지 않습니다.");
+				int id = Integer.parseInt(cmdBits[2]);
+				
+				try {
+					id = Integer.parseInt(cmdBits[2]);
+					// cmdBits[2]가 정수로 바뀔 수 없는 경우가 있을 수 있기 때문에 try-catch 사용
+				} catch(NumberFormatException e) {
+					System.out.println("명령어가 올바르지 않습니다.");
+					continue;
 				}
-			}
+				
+				for(Article article : articles) {
+					if(article.number == id) {
+						foundArticle = article;
+						// foundArticle을 article 로 만들어서 break
+						break;
+					} 
+				}
+				
+				if(foundArticle == null) {
+					System.out.println(id + "번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				System.out.println("번호: " + foundArticle.number);
+				System.out.println("제목: " + foundArticle.title);
+				System.out.println("내용: " + foundArticle.content);
+				System.out.println("날짜: " + foundArticle.date);
+				// 객체를 article이 아닌 foundArticle로 받아서 출력
+			} 
 		}
 		
 		sc.close();
