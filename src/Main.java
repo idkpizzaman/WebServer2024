@@ -105,6 +105,16 @@ public class Main {
 					} 
 				}
 				
+//				int foundIndex = -1;
+//				
+//				for (int i = 0; i < articles.size(); i ++) {
+//					Article article = articles.get(i);
+//					if(article.number == id) {
+//						foundIndex = i;
+//						break;
+//					}
+//				}
+				
 				if(foundArticle == null) {
 					System.out.println("삭제할 " + foundArticle.number + "번 게시물이 존재하지 않습니다.");
 					continue;
@@ -142,9 +152,13 @@ public class Main {
 				}
 				
 				System.out.println("수정할 제목: ");
-				foundArticle.title = sc.nextLine();
+				String title = sc.nextLine().trim();
 				System.out.println("수정할 내용: ");
-				foundArticle.content = sc.nextLine();
+				String content = sc.nextLine().trim();
+				
+				foundArticle.title = title;
+				foundArticle.content = content;
+			
 				System.out.println(foundArticle.number + "번 게시물이 수정되었습니다.");
 			}
 		}
