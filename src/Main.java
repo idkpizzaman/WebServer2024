@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.time.LocalDate;import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +13,7 @@ public class Main {
 		List<Article> articles = new ArrayList<>();
 		
 		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
 		
 		
 		int number = 1;
@@ -64,17 +64,17 @@ public class Main {
 			}
 			
 			if (cmd.equals("article detail")) {
-				if (articles.size() == 0) {
-					System.out.println("1번 게시물이 존재하지 않습니다.");
-				} else {
-					System.out.println("번호를 입력하세요: ");
-					int k = sc.nextInt();
-					Article article = articles.get(k);
-							
+				System.out.println("번호를 입력하세요: ");
+				int k = sc.nextInt() - 1;
+				Article article = articles.get(k);
+				
+				if (article.number == k) {
 					System.out.println("번호: " + article.number);
 					System.out.println("날짜: " + article.date);
 					System.out.println("제목: " + article.title);
 					System.out.println("내용: " + article.content);
+				} else {							
+					System.out.println(k + "번 게시물이 존재하지 않습니다.");
 				}
 			}
 		}
