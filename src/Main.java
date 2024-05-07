@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
+	@SuppressWarnings("null")
 	public static void main(String[] args) {
 		System.out.println("== 프로그램 시작 ==");
 		
@@ -70,14 +71,6 @@ public class Main {
 				
 				int id = Integer.parseInt(cmdBits[2]);
 				
-				try {
-					id = Integer.parseInt(cmdBits[2]);
-					// cmdBits[2]가 정수로 바뀔 수 없는 경우가 있을 수 있기 때문에 try-catch 사용
-				} catch(NumberFormatException e) {
-					System.out.println("명령어가 올바르지 않습니다.");
-					continue;
-				}
-				
 				for(Article article : articles) {
 					if(article.number == id) {
 						foundArticle = article;
@@ -97,6 +90,63 @@ public class Main {
 				System.out.println("날짜: " + foundArticle.date);
 				// 객체를 article이 아닌 foundArticle로 받아서 출력
 			} 
+			
+			if (cmd.startsWith("article delete ")) {
+				String[] cmdBits = cmd.split(" ");
+				Article foundArticle = null;
+				
+				int id = Integer.parseInt(cmdBits[2]);
+				
+				for(Article article : articles) {
+					if(article.number == id) {
+						foundArticle = article;
+						// foundArticle을 article 로 만들어서 break
+						break;
+					} 
+				}
+				
+				if(foundArticle == null) {
+					System.out.println("삭제할 " + foundArticle.number + "번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				articles.remove(foundArticle);
+				System.out.println(foundArticle.number + "번 게시물이 삭제되었습니다.");
+			}
+			
+			if (cmd.startsWith("article modify ")) {
+				String[] cmdBits = cmd.split(" ");
+				Article foundArticle = null;
+				
+				int id = Integer.parseInt(cmdBits[2]);
+				
+				try {
+					id = Integer.parseInt(cmdBits[2]);
+					// cmdBits[2]가 정수로 바뀔 수 없는 경우가 있을 수 있기 때문에 try-catch 사용
+				} catch(NumberFormatException e) {
+					System.out.println("명령어가 올바르지 않습니다.");
+					continue;
+				}
+				
+				for(Article article : articles) {
+					if(article.number == id) {
+						foundArticle = article;
+						// foundArticle을 article 로 만들어서 break
+						break;
+					} 
+				}
+				
+				if(foundArticle == null) {
+					System.out.println("수정할 " + foundArticle.number + "번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				System.out.println("수정할 제목: ");
+				foundArticle.title = sc.nextLine();
+				System.out.println("수정할 내용: ");
+				foundArticle.content = sc.nextLine();
+				System.out.println(foundArticle.number + "번 게시물이 수정되었습니다.");
+			}
 		}
 		
 		sc.close();
