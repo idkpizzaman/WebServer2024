@@ -49,18 +49,42 @@ public class App {
 				System.out.println(number + "번 글이 생성되었습니다");
 				number++;
 
-			} else if (cmd.equals("article list")) {
+			} else if (cmd.startsWith("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("존재하는 게시글이 없습니다");
 					continue;
 				}
-
+				
+				String searchTitle = cmd.substring("articel list".length()).trim();
+				
+				List<Article> printArticles = new ArrayList<>();
+				// 검색어가 입력되지 않으면 원래 있던 요소를 그대로 가지고 있고,
+				
+				if (searchTitle.length() > 0) {
+					System.out.println("검색어: " + searchTitle);
+					
+					printArticles = new ArrayList<>();
+					// 검색어가 입력되었다면 새로운 리스트를 만들어서 검색어에 맞게 넣어줌
+					
+					for (Article article : articles) {
+						if (article.getTitle().contains(searchTitle)) {
+							printArticles.add(article);
+						}
+					}
+					
+					if (printArticles.size() == 0) {
+						System.out.println("검색 결과가 없습니다.");
+						continue;
+					}
+				}
+				
+				// 검색어가 입력되지 않았을 때에 실행 ↓
 				System.out.println("번호	|	제목	|		날짜		|	조회수");
 
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
 					System.out.printf("%d번	|	%s	|	%s	|	%d회\n", article.getNumber(), article.getTitle(), article.getDate(), article.getViewCnt());
-				}
+				}	
 				
 			} else if (cmd.startsWith("article detail ")) {
 					
@@ -136,8 +160,7 @@ public class App {
 		sc.close();
 
 		System.out.println("== 프로그램 끝 ==");
-	
-	}
+		}
 	
 	private Article getArticleById(int id) {
 		for (Article article : articles) {
