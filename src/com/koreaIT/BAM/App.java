@@ -70,7 +70,7 @@ public class App {
 						if (article.getTitle().contains(searchTitle)) {
 							printArticles.add(article);
 						}
-					}
+					} 
 					
 					if (printArticles.size() == 0) {
 						System.out.println("검색 결과가 없습니다.");
@@ -79,7 +79,7 @@ public class App {
 				}
 				
 				// 검색어가 입력되지 않았을 때에 실행 ↓
-				System.out.println("번호	|	제목	|		날짜		|	조회수");
+				System.out.println("번호	|	제목	  |		날짜		|	조회수");
 
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
