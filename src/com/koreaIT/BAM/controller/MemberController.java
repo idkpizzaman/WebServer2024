@@ -10,11 +10,13 @@ import com.koreaIT.BAM.util.Util;
 public class MemberController extends Controller {
 
 	private List<Member> members;
+	private Member loginedMember;
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 		this.members = new ArrayList<>();
 		this.number = 1;
+		this.loginedMember = null;
 	}
 	
 	@Override
@@ -96,14 +98,7 @@ public class MemberController extends Controller {
 		System.out.println("비밀번호: ");
 		String loginPw = sc.nextLine();
 		
-		Member foundMember = null;
-		
-		for (Member member : members) {
-			if (member.getLoginId().equals(loginId)) {
-				foundMember = member;
-				break;
-			}
-		}
+		Member foundMember = getMemberByLoginId(loginId);		
 		
 		if(foundMember == null) {
 			System.out.println("존재하지 않는 아이디입니다.");
@@ -114,17 +109,28 @@ public class MemberController extends Controller {
 			System.out.println("비밀번호를 확인해주세요.");
 			return;
 		}
+		
+		this.loginedMember = foundMember;
+		
 		System.out.println("로그인 성공!");
 	}
 	
-	private boolean loginIdDupChk(String loginId) {
+	private Member getMemberByLoginId(String loginId) {
 		for (Member member : members) {
 			if (member.getLoginId().equals(loginId)) {
-				return false;
+				return member;
 			}
+		} return null;
+	}
+	
+	private boolean loginIdDupChk(String loginId) {
+		Member member = getMemberByLoginId(loginId);
+		
+		if(member != null) {
+			return false;
 		}
 		return true;
-	}
+	} 
 	
 	@Override
 	public void makeTestData() {
