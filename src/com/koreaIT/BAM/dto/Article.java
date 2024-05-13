@@ -2,18 +2,18 @@ package com.koreaIT.BAM.dto;
 
 public class Article {
 	
-	private int number;
+	private int id;
 	private String date;
 	private String title;
 	private String content;
 	private int viewCnt;
 
 	public int getNumber() {
-		return number;
+		return id;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setNumber(int id) {
+		this.id = id;
 	}
 
 	public String getDate() {
@@ -48,8 +48,8 @@ public class Article {
 		this.viewCnt = viewCnt;
 	}
 
-	public Article(int number, String date, String title, String content, int viewCnt) {
-		this.number = number;
+	public Article(int id, String date, String title, String content, int viewCnt) {
+		this.id = id;
 		this.date = date;
 		this.title = title;
 		this.content = content;

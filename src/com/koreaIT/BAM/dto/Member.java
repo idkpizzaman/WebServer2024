@@ -2,7 +2,7 @@ package com.koreaIT.BAM.dto;
 
 public class Member {
 	private int id;
-	private String regDate;
+	private String date;
 	private String loginId;
 	private String loginPw;
 	private String name;
@@ -16,11 +16,11 @@ public class Member {
 	}
 	
 	public String getRegDate() {
-		return regDate;
+		return date;
 	}
 	
 	public void setRegDate(String regDate) {
-		this.regDate = regDate;
+		this.date = regDate;
 	}
 	
 	public String getLoginId() {
@@ -47,9 +47,9 @@ public class Member {
 		this.name = name;
 	}
 	
-	public Member(int id, String regDate, String loginId, String loginPw, String name) {
+	public Member(int id, String date, String loginId, String loginPw, String name) {
 		this.id = id;
-		this.regDate = regDate;
+		this.date = date;
 		this.loginId = loginId;
 		this.loginPw = loginPw;
 		this.name = name;
