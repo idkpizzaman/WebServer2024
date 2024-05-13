@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.koreaIT.BAM.util.Util;
 import com.koreaIT.BAM.dto.Member;
+import com.koreaIT.BAM.util.Util;
 
 public class MemberController extends Controller {
 
@@ -22,6 +22,9 @@ public class MemberController extends Controller {
 		switch(methodName) {
 		case "join" :
 			doJoin();
+			break;
+		case "login" :
+			doLogin();
 			break;
 		default :
 			System.out.println("존재하지 않는 명령어 입니다.");
@@ -85,6 +88,33 @@ public class MemberController extends Controller {
 		
 		System.out.println("[" + loginId + "] 회원님의 가입이 완료되었습니다");
 		number++;
+	}
+	
+	public void doLogin() {
+		System.out.println("아이디: ");
+		String loginId = sc.nextLine();
+		System.out.println("비밀번호: ");
+		String loginPw = sc.nextLine();
+		
+		Member foundMember = null;
+		
+		for (Member member : members) {
+			if (member.getLoginId().equals(loginId)) {
+				foundMember = member;
+				break;
+			}
+		}
+		
+		if(foundMember == null) {
+			System.out.println("존재하지 않는 아이디입니다.");
+			return;
+		}
+		
+		if (foundMember.getLoginPw().equals(loginPw) == false) {
+			System.out.println("비밀번호를 확인해주세요.");
+			return;
+		}
+		System.out.println("로그인 성공!");
 	}
 	
 	private boolean loginIdDupChk(String loginId) {
