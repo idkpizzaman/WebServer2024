@@ -5,22 +5,28 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.BAM.dto.Article;
+import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.util.Util;
 
 public class App {
 	
-	List<Article> articles;
-	int number;
+	private List<Article> articles;
+	private List<Member> members;
+	private int number;
+	private int lastMemberId;
 	
-	App() {
-		articles = new ArrayList<>();
-		number = 1;
+	public App() {
+		this.articles = new ArrayList<>();
+		this.members = new ArrayList<>();
+		this.lastMemberId = 1;
+		this.number = 1;
 	}
 	
 	void run() {
 		System.out.println("== 프로그램 시작 ==");
 		
-		makeTestData();
+		makeTestArticleData();
+		makeTestMemberData();
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -35,6 +41,64 @@ public class App {
 			if (cmd.length() == 0) {
 				System.out.println("명령어를 입력하세요: ");
 				continue;
+			}
+			
+			if(cmd.equals("member join")) {
+				String loginId = null;
+				String loginPw = null;
+				String loginPwChk = null;
+				String name = null;
+				
+				while (true) {
+					System.out.println("아이디: ");
+					loginId = sc.nextLine().trim();
+					
+					if (loginId.length() == 0) {
+						System.out.println("아이디는 필수 입력정보입니다.");
+						continue;
+					}
+					if (loginIdDupChk(loginId) == false) {
+						System.out.println("[" + loginId + "] 은(는) 이미 사용중인 아이디입니다.");
+						continue;
+					}
+					System.out.println("[" + loginId + "] 은(는) 사용 가능한 아이디 입니다.");
+					break;
+				}
+				
+				while (true) {
+					System.out.println("비밀번호: ");
+					loginPw = sc.nextLine().trim();
+					
+					if (loginPw.length() == 0) {
+						System.out.println("비밀번호는 필수 입력정보입니다.");
+						continue;
+					}
+					System.out.printf("비밀번호 확인 : ");
+					loginPwChk = sc.nextLine().trim();
+					
+					if (loginPw.equals(loginPwChk) == false) {
+						System.out.println("비밀번호를 다시 입력해주세요.");
+						continue;
+					}
+					break;
+				}
+				
+				while (true) {
+					System.out.printf("이름 : ");
+					name = sc.nextLine().trim();
+					
+					if (name.length() == 0) {
+						System.out.println("이름은 필수 입력정보입니다");
+						continue;
+					}
+					break;
+				}
+				
+				Member member = new Member(lastMemberId, Util.getDateStr(), loginId, loginPw, name);
+				members.add(member);
+				
+				System.out.println("[" + loginId + "] 회원님의 가입이 완료되었습니다");
+				lastMemberId++;
 			}
 
 			if (cmd.equals("article write")) {
@@ -162,12 +226,35 @@ public class App {
 		System.out.println("== 프로그램 끝 ==");
 		}
 	
+	private void makeTestMemberData() {
+		System.out.println("테스트용 게시글 데이터를 3개 생성했습니다");
+		for (int i = 1; i <= 3; i++) {
+			members.add(new Member(lastMemberId++, Util.getDateStr(), "User" + i, "User" + i, "유저" + i));
+		}
+	}
+
+	private void makeTestArticleData() {
+		System.out.println("테스트용 게시글 데이터를 5개 생성했습니다");
+		for (int i = 1; i <= 5; i++) {
+			articles.add(new Article(number++, Util.getDateStr(), "제목" + i, "내용" + i, i * 10));
+		}
+	}
+
 	private Article getArticleById(int id) {
 		for (Article article : articles) {
 			if (article.getNumber() == id) {
 				return article;
 			}
 		} return null;
+	}
+	
+	private boolean loginIdDupChk(String loginId) {
+		for (Member member : members) {
+			if (member.getLoginId().equals(loginId)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private int getCmdNum(String cmd) {
@@ -178,15 +265,6 @@ public class App {
 			return id;
 		} catch (NumberFormatException e) {
 			return 0;
-		}
-	}
-
-	private void makeTestData() {
-	// App 클래스 외부에 다른 클래스에서 호출된 적이 없기 때문에 private 를 사용해주어도 상관업삼
-		System.out.println("테스트용 게시글 데이터를 5개 생성했습니다");
-		
-		for (int i = 1; i <= 5; i++) {
-			articles.add(new Article(number++, Util.getDateStr(), "제목" + i, "내용" + i, i * 10));
 		}
 	}
 }
