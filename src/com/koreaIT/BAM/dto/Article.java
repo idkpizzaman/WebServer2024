@@ -3,7 +3,7 @@ package com.koreaIT.BAM.dto;
 public class Article {
 	
 	private int id;
-	private String memberId;
+	private int memberId;
 	private String date;
 	private String title;
 	private String content;
@@ -49,15 +49,15 @@ public class Article {
 		this.viewCnt = viewCnt;
 	}
 
-	public String getMemberId() {
+	public int getMemberId() {
 		return memberId;
 	}
 
-	public void setMemberId(String memberId) {
+	public void setMemberId(int memberId) {
 		this.memberId = memberId;
 	}
 
-	public Article(int id, String date, String memberId, String title, String content, int viewCnt) {
+	public Article(int id, String date, int memberId, String title, String content, int viewCnt) {
 		this.id = id;
 		this.date = date;
 		this.title = title;
