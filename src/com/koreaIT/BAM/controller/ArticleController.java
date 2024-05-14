@@ -47,11 +47,7 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doWrite() {
-		if (isLogined() == false) {
-			System.out.println("로그인을 진행해주세요.");
-			return;
-		}
-		
+
 		System.out.printf("제목 : ");
 		String title = sc.nextLine().trim();
 		System.out.printf("내용 : ");
@@ -78,8 +74,8 @@ public class ArticleController extends Controller {
 		if (searchTitle.length() > 0) {
 			System.out.println("검색어: " + searchTitle);
 			
-			printArticles = new ArrayList<>();
 			// 검색어가 입력되었다면 새로운 리스트를 만들어서 검색어에 맞게 넣어줌
+			printArticles = new ArrayList<>();
 			
 			for (Article article : articles) {
 				if (article.getTitle().contains(searchTitle)) {
@@ -130,10 +126,6 @@ public class ArticleController extends Controller {
 	}
 	
 	public void doModify() {
-		if (isLogined() == false) {
-			System.out.println("로그인을 진행해주세요.");
-			return;
-		}
 		
 		int id = getCmdNum(cmd);
 		
@@ -149,7 +141,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		
-		if (foundArticle.getMemberId() == loginedMember.getId()) {
+		if (foundArticle.getMemberId() != loginedMember.getId()) {
 			System.out.println("해당 게시물에 권한이 없습니다.");
 			return;
 		}
@@ -166,10 +158,6 @@ public class ArticleController extends Controller {
 	}
 	
 	public void doDelete() {
-		if (isLogined() == false) {
-			System.out.println("로그인을 진행해주세요.");
-			return;
-		}
 		
 		int id = getCmdNum(cmd);
 		
@@ -185,7 +173,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		
-		if (foundArticle.getMemberId() == loginedMember.getId()) {
+		if (foundArticle.getMemberId() != loginedMember.getId()) {
 			System.out.println("해당 게시물에 권한이 없습니다.");
 			return;
 		}

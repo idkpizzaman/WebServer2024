@@ -10,7 +10,7 @@ public abstract class Controller {
 	public int number;
 	public String cmd;
 	public static Member loginedMember;
-	
+
 	public abstract void doAction(String cmd, String methodName);
 	public abstract void makeTestData();
 	
