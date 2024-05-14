@@ -10,13 +10,12 @@ import com.koreaIT.BAM.util.Util;
 public class MemberController extends Controller {
 
 	private List<Member> members;
-	private Member loginedMember;
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 		this.members = new ArrayList<>();
 		this.number = 1;
-		this.loginedMember = null;
+		loginedMember = null;
 	}
 	
 	@Override
@@ -28,12 +27,21 @@ public class MemberController extends Controller {
 		case "login" :
 			doLogin();
 			break;
+		case "logout" :
+			doLogout();
+			break;
 		default :
 			System.out.println("존재하지 않는 명령어 입니다.");
 		}
 	}
-	
+
+
 	public void doJoin() {
+		if (isLogined()){
+			System.out.println("로그아웃을 먼저 진행 후 회원가입 해주세요!");
+			return;
+		}
+		
 		String loginId = null;
 		String loginPw = null;
 		String loginPwChk = null;
@@ -88,11 +96,16 @@ public class MemberController extends Controller {
 		Member member = new Member(number, Util.getDateStr(), loginId, loginPw, name);
 		members.add(member);
 		
-		System.out.println("[" + loginId + "] 회원님의 가입이 완료되었습니다");
+		System.out.println("[" + name + "] 회원님의 가입이 완료되었습니다");
 		number++;
 	}
 	
 	public void doLogin() {
+		
+		if (isLogined()){
+			System.out.println("이미 로그인 상태입니다.");
+			return;
+		}
 		System.out.println("아이디: ");
 		String loginId = sc.nextLine();
 		System.out.println("비밀번호: ");
@@ -110,11 +123,21 @@ public class MemberController extends Controller {
 			return;
 		}
 		
-		this.loginedMember = foundMember;
+		loginedMember = foundMember;
 		
 		System.out.println("로그인 성공!");
 	}
 	
+	private void doLogout() {
+		if (isLogined() == false) {
+			loginedMember = null;
+			System.out.println("로그아웃!");
+			return;
+		} else {
+			System.out.println("이미 로그아웃 상태입니다.");
+		}
+	}
+
 	private Member getMemberByLoginId(String loginId) {
 		for (Member member : members) {
 			if (member.getLoginId().equals(loginId)) {
@@ -136,7 +159,7 @@ public class MemberController extends Controller {
 	public void makeTestData() {
 		System.out.println("테스트용 게시글 데이터를 3개 생성했습니다");
 		for (int i = 1; i <= 3; i++) {
-			members.add(new Member(number++, Util.getDateStr(), "User" + i, "User" + i, "유저" + i));
+			members.add(new Member(number++, Util.getDateStr(), "유저" + i,"User" + i, "User" + i));
 		}
 	}
 }

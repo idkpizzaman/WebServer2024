@@ -54,5 +54,7 @@ public class Member {
 		this.loginPw = loginPw;
 		this.name = name;
 	}
+
+
 	
 }

@@ -3,6 +3,7 @@ package com.koreaIT.BAM.dto;
 public class Article {
 	
 	private int id;
+	private String memberId;
 	private String date;
 	private String title;
 	private String content;
@@ -48,15 +49,25 @@ public class Article {
 		this.viewCnt = viewCnt;
 	}
 
-	public Article(int id, String date, String title, String content, int viewCnt) {
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public Article(int id, String date, String memberId, String title, String content, int viewCnt) {
 		this.id = id;
 		this.date = date;
 		this.title = title;
 		this.content = content;
 		this.viewCnt = viewCnt;
+		this.memberId = memberId;
 	}
 	
 	public void increaseViewCnt() {
 		this.viewCnt++;
 	}
+
 }

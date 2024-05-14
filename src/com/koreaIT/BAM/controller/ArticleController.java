@@ -31,11 +31,11 @@ public class ArticleController extends Controller {
 		case "detail":
 			showDetail();
 			break;
-		case "delete":
-			doDelete();
-			break;
 		case "modify":
 			doModify();
+			break;
+		case "delete":
+			doDelete();
 			break;
 		default :
 			System.out.println("존재하지 않는 명령어 입니다.");
@@ -43,12 +43,17 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doWrite() {
+		if (isLogined() == false) {
+			System.out.println("로그인을 진행해주세요.");
+			return;
+		}
+		
 		System.out.printf("제목 : ");
 		String title = sc.nextLine().trim();
 		System.out.printf("내용 : ");
 		String content = sc.nextLine().trim();
 
-		Article article = new Article(number, Util.getDateStr(), title, content, 0);
+		Article article = new Article(number, Util.getDateStr(), loginedMember.getLoginId(), title, content, 0);
 		articles.add(article);
 
 		System.out.println(number + "번 글이 생성되었습니다");
@@ -63,7 +68,7 @@ public class ArticleController extends Controller {
 		
 		String searchTitle = cmd.substring("articel list".length()).trim();
 		
-		List<Article> printArticles = new ArrayList<>();
+		List<Article> printArticles = articles;
 		// 검색어가 입력되지 않으면 원래 있던 요소를 그대로 가지고 있고,
 		
 		if (searchTitle.length() > 0) {
@@ -85,11 +90,11 @@ public class ArticleController extends Controller {
 		}
 		
 		// 검색어가 입력되지 않았을 때에 실행 ↓
-		System.out.println("번호	|	제목	  |		날짜		|	조회수");
+		System.out.println("	번호	|	제목	  |		날짜		|	조회수	|	작성자	|");
 
 		for (int i = articles.size() - 1; i >= 0; i--) {
 			Article article = articles.get(i);
-			System.out.printf("%d번	|	%s	|	%s	|	%d회\n", article.getNumber(), article.getTitle(), article.getDate(), article.getViewCnt());
+			System.out.printf("	%d번	|	%s	 |	%s	|	%d회	|	 %s	|\n", article.getNumber(), article.getTitle(), article.getDate(), article.getViewCnt(), article.getMemberId());
 		}
 	}
 	
@@ -117,10 +122,16 @@ public class ArticleController extends Controller {
 	}
 	
 	public void doModify() {
+		if (isLogined() == false) {
+			System.out.println("로그인을 진행해주세요.");
+			return;
+		}
+		
 		int id = getCmdNum(cmd);
 		
 		if (id == 0) {
-			System.out.println("존재하지 않는 명령어입니다.");
+			System.out.println("명령어가 올바르지 않습니다.");
+			return;
 		}
 		
 		Article foundArticle = getArticleById(id);
@@ -142,10 +153,17 @@ public class ArticleController extends Controller {
 	}
 	
 	public void doDelete() {
+		
+		if (isLogined() == false) {
+			System.out.println("로그인을 진행해주세요.");
+			return;
+		}
+		
 		int id = getCmdNum(cmd);
 		
 		if (id == 0) {
-			System.out.println("존재하지 않는 명령어입니다.");
+			System.out.println("명령어가 올바르지 않습니다.");
+			return;
 		}
 		
 		Article foundArticle = getArticleById(id);
@@ -176,6 +194,8 @@ public class ArticleController extends Controller {
 			return id;
 		} catch (NumberFormatException e) {
 			return 0;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
 		}
 	}
 	
@@ -183,7 +203,7 @@ public class ArticleController extends Controller {
 	public void makeTestData() {
 		System.out.println("테스트용 게시글 데이터를 5개 생성했습니다");
 		for (int i = 1; i <= 5; i++) {
-			articles.add(new Article(number++, Util.getDateStr(), "제목" + i, "내용" + i, i * 10));
+			articles.add(new Article(number++, Util.getDateStr(), "작성자" + i, "제목" + i, "내용" + i, i * 10));
 		}
 	}
 
