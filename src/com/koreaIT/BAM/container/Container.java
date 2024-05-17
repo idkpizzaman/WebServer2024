@@ -1,18 +1,20 @@
 package com.koreaIT.BAM.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.koreaIT.BAM.dao.ArticleDao;
+import com.koreaIT.BAM.dao.MemberDao;
+import com.koreaIT.BAM.service.ArticleService;
+import com.koreaIT.BAM.service.MemberService;
 
-import com.koreaIT.BAM.dto.Article;
-import com.koreaIT.BAM.dto.Member;
-
-@SuppressWarnings("unused")
 public class Container {
-	public static ArrayList<Member> members;
-	public static ArrayList<Article> articles;
+	public static MemberDao memberDao;
+	public static ArticleDao articleDao;
+	public static MemberService memberService;
+	public static ArticleService articleService;
 	
 	static {
-		members = new ArrayList<>();
-		articles = new ArrayList<>();
+		memberDao = new MemberDao();
+		articleDao = new ArticleDao();
+		memberService = new MemberService();
+		articleService = new ArticleService();
 	}
 }

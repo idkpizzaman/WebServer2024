@@ -1,20 +1,18 @@
 package com.koreaIT.BAM.controller;
 
-import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dto.Member;
-import com.koreaIT.BAM.util.Util;
+import com.koreaIT.BAM.service.MemberService;
 
 public class MemberController extends Controller {
 
-	private List<Member> members;
+	private MemberService memberService;
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
-		this.members = Container.members;
-		this.number = 1;
+		this.memberService = Container.memberService;
 		loginedMember = null;
 	}
 	
@@ -43,7 +41,6 @@ public class MemberController extends Controller {
 		String loginPwChk = null;
 		String name = null;
 		
-		
 		while (true) {
 			System.out.println("아이디: ");
 			loginId = sc.nextLine().trim();
@@ -52,7 +49,7 @@ public class MemberController extends Controller {
 				System.out.println("아이디는 필수 입력정보입니다.");
 				continue;
 			}
-			if (loginIdDupChk(loginId) == false) {
+			if (memberService.loginIdDupChk(loginId) == false) {
 				System.out.println("[" + loginId + "] 은(는) 이미 사용중인 아이디입니다.");
 				continue;
 			}
@@ -89,11 +86,9 @@ public class MemberController extends Controller {
 			break;
 		}
 		
-		Member member = new Member(number, Util.getDateStr(), loginId, loginPw, name);
-		members.add(member);
+		memberService.joinMember(loginId, loginPw, name);
 		
 		System.out.println("[" + name + "] 회원님의 가입이 완료되었습니다");
-		number++;
 	}
 	
 	public void doLogin() {
@@ -103,7 +98,7 @@ public class MemberController extends Controller {
 		System.out.println("비밀번호: ");
 		String loginPw = sc.nextLine();
 		
-		Member foundMember = getMemberByLoginId(loginId);		
+		Member foundMember = memberService.getMemberByLoginId(loginId);		
 		
 		if(foundMember == null) {
 			System.out.println("존재하지 않는 아이디입니다.");
@@ -123,29 +118,12 @@ public class MemberController extends Controller {
 	private void doLogout() {
 		loginedMember = null;
 	}
-
-	private Member getMemberByLoginId(String loginId) {
-		for (Member member : members) {
-			if (member.getLoginId().equals(loginId)) {
-				return member;
-			}
-		} return null;
-	}
-	
-	private boolean loginIdDupChk(String loginId) {
-		Member member = getMemberByLoginId(loginId);
-		
-		if(member != null) {
-			return false;
-		}
-		return true;
-	} 
 	
 	@Override
 	public void makeTestData() {
 		System.out.println("테스트용 게시글 데이터를 3개 생성했습니다");
 		for (int i = 1; i <= 3; i++) {
-			members.add(new Member(number++, Util.getDateStr(), "유저" + i,"User" + i, "User" + i));
+			memberService.joinMember("user" + i, "user" + i , "유저" +i);
 		}
 	}
 }
